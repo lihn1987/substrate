@@ -2269,6 +2269,43 @@
 <span id="2264">2264</span>
 <span id="2265">2265</span>
 <span id="2266">2266</span>
+<span id="2267">2267</span>
+<span id="2268">2268</span>
+<span id="2269">2269</span>
+<span id="2270">2270</span>
+<span id="2271">2271</span>
+<span id="2272">2272</span>
+<span id="2273">2273</span>
+<span id="2274">2274</span>
+<span id="2275">2275</span>
+<span id="2276">2276</span>
+<span id="2277">2277</span>
+<span id="2278">2278</span>
+<span id="2279">2279</span>
+<span id="2280">2280</span>
+<span id="2281">2281</span>
+<span id="2282">2282</span>
+<span id="2283">2283</span>
+<span id="2284">2284</span>
+<span id="2285">2285</span>
+<span id="2286">2286</span>
+<span id="2287">2287</span>
+<span id="2288">2288</span>
+<span id="2289">2289</span>
+<span id="2290">2290</span>
+<span id="2291">2291</span>
+<span id="2292">2292</span>
+<span id="2293">2293</span>
+<span id="2294">2294</span>
+<span id="2295">2295</span>
+<span id="2296">2296</span>
+<span id="2297">2297</span>
+<span id="2298">2298</span>
+<span id="2299">2299</span>
+<span id="2300">2300</span>
+<span id="2301">2301</span>
+<span id="2302">2302</span>
+<span id="2303">2303</span>
 </pre><pre class="rust"><code><span class="comment">// This file is part of Substrate.</span>
 
 <span class="comment">// Copyright (C) 2017-2022 Parity Technologies (UK) Ltd.</span>
@@ -2419,6 +2456,47 @@
 	<span class="doccomment">/// for the network processing to advance. From it, you can extract a `NetworkService` using</span>
 	<span class="doccomment">/// `worker.service()`. The `NetworkService` can be shared through the codebase.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw-2">mut</span> <span class="ident">params</span>: <span class="ident">Params</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">H</span>, <span class="ident">Client</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+		<span class="comment">// Private and public keys configuration.</span>
+		<span class="kw">let</span> <span class="ident">local_identity</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">network_config</span>.<span class="ident">node_key</span>.<span class="ident">clone</span>().<span class="ident">into_keypair</span>()<span class="question-mark">?</span>;
+		<span class="kw">let</span> <span class="ident">local_public</span> <span class="op">=</span> <span class="ident">local_identity</span>.<span class="ident">public</span>();
+		<span class="kw">let</span> <span class="ident">local_peer_id</span> <span class="op">=</span> <span class="ident">local_public</span>.<span class="ident">to_peer_id</span>();
+
+		<span class="ident">params</span>.<span class="ident">network_config</span>.<span class="ident">boot_nodes</span> <span class="op">=</span> <span class="ident">params</span>
+			.<span class="ident">network_config</span>
+			.<span class="ident">boot_nodes</span>
+			.<span class="ident">into_iter</span>()
+			.<span class="ident">filter</span>(<span class="op">|</span><span class="ident">boot_node</span><span class="op">|</span> {
+				<span class="kw">if</span> <span class="ident">boot_node</span>.<span class="ident">peer_id</span> <span class="op">==</span> <span class="ident">local_peer_id</span> {
+					<span class="macro">warn!</span>(
+						<span class="ident">target</span>: <span class="string">&quot;sub-libp2p&quot;</span>,
+						<span class="string">&quot;Local peer ID used in bootnode, ignoring: {}&quot;</span>,
+						<span class="ident">boot_node</span>,
+					);
+					<span class="bool-val">false</span>
+				} <span class="kw">else</span> {
+					<span class="bool-val">true</span>
+				}
+			})
+			.<span class="ident">collect</span>();
+		<span class="ident">params</span>.<span class="ident">network_config</span>.<span class="ident">default_peers_set</span>.<span class="ident">reserved_nodes</span> <span class="op">=</span> <span class="ident">params</span>
+			.<span class="ident">network_config</span>
+			.<span class="ident">default_peers_set</span>
+			.<span class="ident">reserved_nodes</span>
+			.<span class="ident">into_iter</span>()
+			.<span class="ident">filter</span>(<span class="op">|</span><span class="ident">reserved_node</span><span class="op">|</span> {
+				<span class="kw">if</span> <span class="ident">reserved_node</span>.<span class="ident">peer_id</span> <span class="op">==</span> <span class="ident">local_peer_id</span> {
+					<span class="macro">warn!</span>(
+						<span class="ident">target</span>: <span class="string">&quot;sub-libp2p&quot;</span>,
+						<span class="string">&quot;Local peer ID used in reserved node, ignoring: {}&quot;</span>,
+						<span class="ident">reserved_node</span>,
+					);
+					<span class="bool-val">false</span>
+				} <span class="kw">else</span> {
+					<span class="bool-val">true</span>
+				}
+			})
+			.<span class="ident">collect</span>();
+
 		<span class="comment">// Ensure the listen addresses are consistent with the transport.</span>
 		<span class="ident">ensure_addresses_consistent_with_transport</span>(
 			<span class="ident">params</span>.<span class="ident">network_config</span>.<span class="ident">listen_addresses</span>.<span class="ident">iter</span>(),
@@ -2461,10 +2539,6 @@
 			.<span class="ident">extra_sets</span>
 			.<span class="ident">insert</span>(<span class="number">0</span>, <span class="ident">transactions_handler_proto</span>.<span class="ident">set_config</span>());
 
-		<span class="comment">// Private and public keys configuration.</span>
-		<span class="kw">let</span> <span class="ident">local_identity</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">network_config</span>.<span class="ident">node_key</span>.<span class="ident">clone</span>().<span class="ident">into_keypair</span>()<span class="question-mark">?</span>;
-		<span class="kw">let</span> <span class="ident">local_public</span> <span class="op">=</span> <span class="ident">local_identity</span>.<span class="ident">public</span>();
-		<span class="kw">let</span> <span class="ident">local_peer_id</span> <span class="op">=</span> <span class="ident">local_public</span>.<span class="ident">to_peer_id</span>();
 		<span class="macro">info!</span>(
 			<span class="ident">target</span>: <span class="string">&quot;sub-libp2p&quot;</span>,
 			<span class="string">&quot;🏷  Local node identity is: {}&quot;</span>,
