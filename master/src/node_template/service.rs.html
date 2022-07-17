@@ -645,24 +645,24 @@
 			.<span class="ident">spawn_blocking</span>(<span class="string">&quot;aura&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;block-authoring&quot;</span>), <span class="ident">aura</span>);
 	}
 
-	<span class="comment">// if the node isn&#39;t actively participating in consensus then it doesn&#39;t</span>
-	<span class="comment">// need a keystore, regardless of which protocol we use below.</span>
-	<span class="kw">let</span> <span class="ident">keystore</span> <span class="op">=</span>
-		<span class="kw">if</span> <span class="ident">role</span>.<span class="ident">is_authority</span>() { <span class="prelude-val">Some</span>(<span class="ident">keystore_container</span>.<span class="ident">sync_keystore</span>()) } <span class="kw">else</span> { <span class="prelude-val">None</span> };
-
-	<span class="kw">let</span> <span class="ident">grandpa_config</span> <span class="op">=</span> <span class="ident">sc_finality_grandpa::Config</span> {
-		<span class="comment">// FIXME #1578 make this available through chainspec</span>
-		<span class="ident">gossip_duration</span>: <span class="ident">Duration::from_millis</span>(<span class="number">333</span>),
-		<span class="ident">justification_period</span>: <span class="number">512</span>,
-		<span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="ident">name</span>),
-		<span class="ident">observer_enabled</span>: <span class="bool-val">false</span>,
-		<span class="ident">keystore</span>,
-		<span class="ident">local_role</span>: <span class="ident">role</span>,
-		<span class="ident">telemetry</span>: <span class="ident">telemetry</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">handle</span>()),
-		<span class="ident">protocol_name</span>: <span class="ident">grandpa_protocol_name</span>,
-	};
-
 	<span class="kw">if</span> <span class="ident">enable_grandpa</span> {
+		<span class="comment">// if the node isn&#39;t actively participating in consensus then it doesn&#39;t</span>
+		<span class="comment">// need a keystore, regardless of which protocol we use below.</span>
+		<span class="kw">let</span> <span class="ident">keystore</span> <span class="op">=</span>
+			<span class="kw">if</span> <span class="ident">role</span>.<span class="ident">is_authority</span>() { <span class="prelude-val">Some</span>(<span class="ident">keystore_container</span>.<span class="ident">sync_keystore</span>()) } <span class="kw">else</span> { <span class="prelude-val">None</span> };
+
+		<span class="kw">let</span> <span class="ident">grandpa_config</span> <span class="op">=</span> <span class="ident">sc_finality_grandpa::Config</span> {
+			<span class="comment">// FIXME #1578 make this available through chainspec</span>
+			<span class="ident">gossip_duration</span>: <span class="ident">Duration::from_millis</span>(<span class="number">333</span>),
+			<span class="ident">justification_period</span>: <span class="number">512</span>,
+			<span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="ident">name</span>),
+			<span class="ident">observer_enabled</span>: <span class="bool-val">false</span>,
+			<span class="ident">keystore</span>,
+			<span class="ident">local_role</span>: <span class="ident">role</span>,
+			<span class="ident">telemetry</span>: <span class="ident">telemetry</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">handle</span>()),
+			<span class="ident">protocol_name</span>: <span class="ident">grandpa_protocol_name</span>,
+		};
+
 		<span class="comment">// start the full GRANDPA voter</span>
 		<span class="comment">// NOTE: non-authorities could run the GRANDPA observer protocol, but at</span>
 		<span class="comment">// this point the full voter should provide better guarantees of block</span>

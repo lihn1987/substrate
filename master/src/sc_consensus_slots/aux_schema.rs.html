@@ -317,8 +317,8 @@
 		<span class="comment">// 1) signed by the same voter,</span>
 		<span class="kw">if</span> <span class="ident">prev_signer</span> <span class="op">==</span> <span class="ident">signer</span> {
 			<span class="comment">// 2) with different hash</span>
-			<span class="kw">if</span> <span class="ident">header</span>.<span class="ident">hash</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">prev_header</span>.<span class="ident">hash</span>() {
-				<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">EquivocationProof</span> {
+			<span class="kw">return</span> <span class="kw">if</span> <span class="ident">header</span>.<span class="ident">hash</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">prev_header</span>.<span class="ident">hash</span>() {
+				<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">EquivocationProof</span> {
 					<span class="ident">slot</span>,
 					<span class="ident">offender</span>: <span class="ident">signer</span>.<span class="ident">clone</span>(),
 					<span class="ident">first_header</span>: <span class="ident">prev_header</span>.<span class="ident">clone</span>(),
@@ -328,7 +328,7 @@
 				<span class="comment">// We don&#39;t need to continue in case of duplicated header,</span>
 				<span class="comment">// since it&#39;s already saved and a possible equivocation</span>
 				<span class="comment">// would have been detected before.</span>
-				<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
+				<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
 			}
 		}
 	}
