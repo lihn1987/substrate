@@ -534,7 +534,7 @@
 	<span class="ident">unassign_curator</span> {
 		<span class="ident">setup_pot_account</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
 		<span class="kw">let</span> <span class="ident">bounty_setup</span> <span class="op">=</span> <span class="ident">activate_child_bounty</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="number">0</span>, <span class="ident">T::MaximumReasonLength::get</span>())<span class="question-mark">?</span>;
-		<span class="ident">Bounties</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::on_initialize</span>(<span class="ident">T::BlockNumber::zero</span>());
+		<span class="ident">Treasury</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::on_initialize</span>(<span class="ident">T::BlockNumber::zero</span>());
 		<span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::set_block_number</span>(<span class="ident">T::BountyUpdatePeriod::get</span>() <span class="op">+</span> <span class="number">1u32</span>.<span class="ident">into</span>());
 		<span class="kw">let</span> <span class="ident">caller</span> <span class="op">=</span> <span class="ident">whitelisted_caller</span>();
 	}: <span class="kw">_</span>(<span class="ident">RawOrigin::Signed</span>(<span class="ident">caller</span>), <span class="ident">bounty_setup</span>.<span class="ident">bounty_id</span>,
@@ -608,7 +608,7 @@
 	<span class="ident">close_child_bounty_active</span> {
 		<span class="ident">setup_pot_account</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
 		<span class="kw">let</span> <span class="ident">bounty_setup</span> <span class="op">=</span> <span class="ident">activate_child_bounty</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="number">0</span>, <span class="ident">T::MaximumReasonLength::get</span>())<span class="question-mark">?</span>;
-		<span class="ident">Bounties</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::on_initialize</span>(<span class="ident">T::BlockNumber::zero</span>());
+		<span class="ident">Treasury</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::on_initialize</span>(<span class="ident">T::BlockNumber::zero</span>());
 	}: <span class="ident">close_child_bounty</span>(<span class="ident">RawOrigin::Root</span>, <span class="ident">bounty_setup</span>.<span class="ident">bounty_id</span>, <span class="ident">bounty_setup</span>.<span class="ident">child_bounty_id</span>)
 	<span class="ident">verify</span> {
 		<span class="ident">assert_last_event</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">Event::Canceled</span> {
