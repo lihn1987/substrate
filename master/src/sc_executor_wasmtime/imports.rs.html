@@ -240,7 +240,7 @@
 		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">pending_func_imports</span>.<span class="ident">remove</span>(<span class="ident">fn_name</span>).<span class="ident">is_some</span>() {
 			<span class="self">self</span>.<span class="ident">linker</span>.<span class="ident">func_wrap</span>(<span class="string">&quot;env&quot;</span>, <span class="ident">fn_name</span>, <span class="ident">func</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">error</span><span class="op">|</span> {
 				<span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(
-					<span class="string">&quot;failed to register host function &#39;{}&#39; with the WASM linker: {}&quot;</span>,
+					<span class="string">&quot;failed to register host function &#39;{}&#39; with the WASM linker: {:#}&quot;</span>,
 					<span class="ident">fn_name</span>, <span class="ident">error</span>
 				))
 			})<span class="question-mark">?</span>;

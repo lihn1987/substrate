@@ -1049,12 +1049,12 @@
 
 	<span class="kw">let</span> <span class="ident">wasmtime_cache_root</span> <span class="op">=</span> <span class="ident">cache_path</span>.<span class="ident">join</span>(<span class="string">&quot;wasmtime&quot;</span>);
 	<span class="ident">fs::create_dir_all</span>(<span class="kw-2">&amp;</span><span class="ident">wasmtime_cache_root</span>)
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;cannot create the dirs to cache: {:?}&quot;</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;cannot create the dirs to cache: {}&quot;</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
 
 	<span class="comment">// Canonicalize the path after creating the directories.</span>
 	<span class="kw">let</span> <span class="ident">wasmtime_cache_root</span> <span class="op">=</span> <span class="ident">wasmtime_cache_root</span>
 		.<span class="ident">canonicalize</span>()
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;failed to canonicalize the path: {:?}&quot;</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;failed to canonicalize the path: {}&quot;</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
 
 	<span class="comment">// Write the cache config file</span>
 	<span class="kw">let</span> <span class="ident">cache_config_path</span> <span class="op">=</span> <span class="ident">wasmtime_cache_root</span>.<span class="ident">join</span>(<span class="string">&quot;cache-config.toml&quot;</span>);
@@ -1067,11 +1067,11 @@ directory = \&quot;{cache_dir}\&quot;
 		<span class="ident">cache_dir</span> <span class="op">=</span> <span class="ident">wasmtime_cache_root</span>.<span class="ident">display</span>()
 	);
 	<span class="ident">fs::write</span>(<span class="kw-2">&amp;</span><span class="ident">cache_config_path</span>, <span class="ident">config_content</span>)
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;cannot write the cache config: {:?}&quot;</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;cannot write the cache config: {}&quot;</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
 
 	<span class="ident">config</span>
 		.<span class="ident">cache_config_load</span>(<span class="ident">cache_config_path</span>)
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;failed to parse the config: {:?}&quot;</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;failed to parse the config: {:#}&quot;</span>, <span class="ident">err</span>))<span class="question-mark">?</span>;
 
 	<span class="prelude-val">Ok</span>(())
 }
@@ -1096,14 +1096,14 @@ directory = \&quot;{cache_dir}\&quot;
 	};
 	<span class="ident">config</span>
 		.<span class="ident">profiler</span>(<span class="ident">profiler</span>)
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Instantiation</span>(<span class="macro">format!</span>(<span class="string">&quot;fail to set profiler: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Instantiation</span>(<span class="macro">format!</span>(<span class="string">&quot;fail to set profiler: {:#}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
 
 	<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">DeterministicStackLimit</span> { <span class="ident">native_stack_max</span>, .. }) <span class="op">=</span>
 		<span class="ident">semantics</span>.<span class="ident">deterministic_stack_limit</span>
 	{
 		<span class="ident">config</span>
 			.<span class="ident">max_wasm_stack</span>(<span class="ident">native_stack_max</span> <span class="kw">as</span> <span class="ident">usize</span>)
-			.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot set max wasm stack: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+			.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot set max wasm stack: {:#}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
 	}
 
 	<span class="ident">config</span>.<span class="ident">parallel_compilation</span>(<span class="ident">semantics</span>.<span class="ident">parallel_compilation</span>);
@@ -1410,7 +1410,7 @@ directory = \&quot;{cache_dir}\&quot;
 	}
 
 	<span class="kw">let</span> <span class="ident">engine</span> <span class="op">=</span> <span class="ident">Engine::new</span>(<span class="kw-2">&amp;</span><span class="ident">wasmtime_config</span>)
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot create the wasmtime engine: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot create the wasmtime engine: {:#}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
 
 	<span class="kw">let</span> (<span class="ident">module</span>, <span class="ident">instantiation_strategy</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">code_supply_mode</span> {
 		<span class="ident">CodeSupplyMode::Fresh</span>(<span class="ident">blob</span>) =&gt; {
@@ -1418,7 +1418,7 @@ directory = \&quot;{cache_dir}\&quot;
 			<span class="kw">let</span> <span class="ident">serialized_blob</span> <span class="op">=</span> <span class="ident">blob</span>.<span class="ident">clone</span>().<span class="ident">serialize</span>();
 
 			<span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">wasmtime::Module::new</span>(<span class="kw-2">&amp;</span><span class="ident">engine</span>, <span class="kw-2">&amp;</span><span class="ident">serialized_blob</span>)
-				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot create module: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot create module: {:#}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
 
 			<span class="kw">match</span> <span class="ident">config</span>.<span class="ident">semantics</span>.<span class="ident">instantiation_strategy</span> {
 				<span class="ident">InstantiationStrategy::LegacyInstanceReuse</span> =&gt; {
@@ -1456,7 +1456,7 @@ directory = \&quot;{cache_dir}\&quot;
 			<span class="comment">//</span>
 			<span class="comment">//         See [`create_runtime_from_artifact`] for more details.</span>
 			<span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">wasmtime::Module::deserialize_file</span>(<span class="kw-2">&amp;</span><span class="ident">engine</span>, <span class="ident">compiled_artifact_path</span>)
-				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot deserialize module: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot deserialize module: {:#}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
 
 			(<span class="ident">module</span>, <span class="ident">InternalInstantiationStrategy::Builtin</span>)
 		},
@@ -1469,7 +1469,7 @@ directory = \&quot;{cache_dir}\&quot;
 		<span class="ident"><span class="kw">crate</span>::instance_wrapper::create_store</span>(<span class="ident">module</span>.<span class="ident">engine</span>(), <span class="ident">config</span>.<span class="ident">semantics</span>.<span class="ident">max_memory_size</span>);
 	<span class="kw">let</span> <span class="ident">instance_pre</span> <span class="op">=</span> <span class="ident">linker</span>
 		.<span class="ident">instantiate_pre</span>(<span class="kw-2">&amp;mut</span> <span class="ident">store</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>)
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot preinstantiate module: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot preinstantiate module: {:#}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
 
 	<span class="prelude-val">Ok</span>(<span class="ident">WasmtimeRuntime</span> {
 		<span class="ident">engine</span>,
@@ -1521,11 +1521,11 @@ directory = \&quot;{cache_dir}\&quot;
 	<span class="kw">let</span> <span class="ident">blob</span> <span class="op">=</span> <span class="ident">prepare_blob_for_compilation</span>(<span class="ident">blob</span>, <span class="kw-2">&amp;</span><span class="ident">semantics</span>)<span class="question-mark">?</span>;
 
 	<span class="kw">let</span> <span class="ident">engine</span> <span class="op">=</span> <span class="ident">Engine::new</span>(<span class="kw-2">&amp;</span><span class="ident">common_config</span>(<span class="kw-2">&amp;</span><span class="ident">semantics</span>)<span class="question-mark">?</span>)
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot create the engine: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot create the engine: {:#}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
 
 	<span class="ident">engine</span>
 		.<span class="ident">precompile_module</span>(<span class="kw-2">&amp;</span><span class="ident">blob</span>.<span class="ident">serialize</span>())
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot precompile module: {}&quot;</span>, <span class="ident">e</span>)))
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">WasmError::Other</span>(<span class="macro">format!</span>(<span class="string">&quot;cannot precompile module: {:#}&quot;</span>, <span class="ident">e</span>)))
 }
 
 <span class="kw">fn</span> <span class="ident">perform_call</span>(
