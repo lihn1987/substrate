@@ -107,6 +107,9 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
 </pre><pre class="rust"><code><span class="comment">// This file is part of Substrate.</span>
 
 <span class="comment">// Copyright (C) 2020-2022 Parity Technologies (UK) Ltd.</span>
@@ -127,6 +130,7 @@
 <span class="doccomment">//! Contains the root [`BenchmarkCmd`] command and exports its sub-commands.</span>
 
 <span class="kw">mod</span> <span class="ident">block</span>;
+<span class="kw">mod</span> <span class="ident">extrinsic</span>;
 <span class="kw">mod</span> <span class="ident">machine</span>;
 <span class="kw">mod</span> <span class="ident">overhead</span>;
 <span class="kw">mod</span> <span class="ident">pallet</span>;
@@ -134,8 +138,9 @@
 <span class="kw">mod</span> <span class="ident">storage</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">block::BlockCmd</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">extrinsic</span>::{<span class="ident">ExtrinsicBuilder</span>, <span class="ident">ExtrinsicCmd</span>, <span class="ident">ExtrinsicFactory</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">machine</span>::{<span class="ident">MachineCmd</span>, <span class="ident">Requirements</span>, <span class="ident">SUBSTRATE_REFERENCE_HARDWARE</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">overhead</span>::{<span class="ident">ExtrinsicBuilder</span>, <span class="ident">OverheadCmd</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">overhead::OverheadCmd</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet::PalletCmd</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">storage::StorageCmd</span>;
 
@@ -150,8 +155,8 @@
 	<span class="ident">Storage</span>(<span class="ident">StorageCmd</span>),
 	<span class="ident">Overhead</span>(<span class="ident">OverheadCmd</span>),
 	<span class="ident">Block</span>(<span class="ident">BlockCmd</span>),
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">hide</span> <span class="op">=</span> <span class="bool-val">true</span>)]</span> <span class="comment">// Hidden until fully completed.</span>
 	<span class="ident">Machine</span>(<span class="ident">MachineCmd</span>),
+	<span class="ident">Extrinsic</span>(<span class="ident">ExtrinsicCmd</span>),
 }
 
 <span class="doccomment">/// Unwraps a [`BenchmarkCmd`] into its concrete sub-command.</span>
@@ -167,6 +172,7 @@
 			<span class="ident">BenchmarkCmd::Overhead</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cmd</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
 			<span class="ident">BenchmarkCmd::Block</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cmd</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
 			<span class="ident">BenchmarkCmd::Machine</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cmd</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
+			<span class="ident">BenchmarkCmd::Extrinsic</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cmd</span>) =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>,
 		}
 	}
 }
