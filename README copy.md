@@ -1,9 +1,3 @@
-- 为substrate增加了一个工具，在tools 中
-- python3 create_testnet.py create 能够自动启动一个多节点的全功能链
-- tools/config.json 是对这条链的配置
-
-
-
 # Substrate &middot; [![GitHub license](https://img.shields.io/badge/license-GPL3%2FApache2-blue)](#LICENSE) [![GitLab Status](https://gitlab.parity.io/parity/substrate/badges/master/pipeline.svg)](https://gitlab.parity.io/parity/substrate/pipelines) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](docs/CONTRIBUTING.adoc) [![Matrix](https://img.shields.io/matrix/substrate-technical:matrix.org)](https://matrix.to/#/#substrate-technical:matrix.org)
 
 <p align="center">
