@@ -1574,6 +1574,16 @@ impl pallet_alliance::Config for Runtime {
 	type WeightInfo = pallet_alliance::weights::SubstrateWeight<Runtime>;
 }
 
+parameter_types! {
+
+}
+
+impl pallet_secret_info::Config for Runtime {
+	type Event = Event;
+	type Currency = Balances;
+	type ForceOrigin = EnsureRoot<AccountId>;
+}
+
 construct_runtime!(
 	pub enum Runtime where
 		Block = Block,
@@ -1636,6 +1646,7 @@ construct_runtime!(
 		NominationPools: pallet_nomination_pools,
 		RankedPolls: pallet_referenda::<Instance2>,
 		RankedCollective: pallet_ranked_collective,
+		SecretInfo: pallet_secret_info
 	}
 );
 

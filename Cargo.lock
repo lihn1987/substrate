@@ -4832,6 +4832,7 @@ dependencies = [
  "pallet-referenda",
  "pallet-remark",
  "pallet-scheduler",
+ "pallet-secret-info",
  "pallet-session",
  "pallet-session-benchmarking",
  "pallet-society",
@@ -6189,6 +6190,21 @@ dependencies = [
 [[package]]
 name = "pallet-scored-pool"
 version = "4.0.0-dev"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "pallet-balances",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-secret-info"
+version = "0.0.1-dev"
 dependencies = [
  "frame-support",
  "frame-system",
